@@ -1,18 +1,16 @@
+use std::u32;
+
+use nom::character;
+
 use crate::custom_error::AocError;
 
 #[tracing::instrument]
-pub fn process(
-    input: &str,
-) -> miette::Result<String, AocError> {
+pub fn process(input: &str) -> miette::Result<String, AocError> {
     let output = input
         .lines()
         .map(|line| {
-            let mut it =
-                line.chars().filter_map(|character| {
-                    character.to_digit(10)
-                });
-            let first =
-                it.next().expect("should be a number");
+            let mut it = line.chars().filter_map(|character| character.to_digit(10));
+            let first = it.next().expect("should be a number");
 
             match it.last() {
                 Some(num) => format!("{first}{num}"),
@@ -22,7 +20,6 @@ pub fn process(
             .expect("should be a valid number")
         })
         .sum::<u32>();
-
     Ok(output.to_string())
 }
 
